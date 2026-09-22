@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Map</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef6f9;
+        }
+
+        .navbar {
+            background: #2573a7;
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        input {
+            width: 60%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 13px 25px;
+            background: #2573a7;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #18577f;
+        }
+
+        .weather-card {
+            margin-top: 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .weather-card h2 {
+            color: #2573a7;
+        }
+
+        .weather-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info {
+            background: #eef6f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .info h3 {
+            margin: 0 0 10px;
+            color: #2573a7;
+        }
+
+        .error {
+            color: red;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            input {
+                width: 90%;
+                margin-bottom: 10px;
+            }
+
+            .weather-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    🌦️ Weather Map
+</div>
+
+<div class="container">
+
+    <div class="search-box">
+
+        <h1>Check Weather</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <input
+                type="text"
+                name="city"
+                placeholder="Enter city name"
+                required
+            >
+
+            <button type="submit">
+                Search
+            </button>
+        </form>
+
+    </div>
+
+
+    {% if weather %}
+
+    <div class="weather-card">
+
+        <h2>{{ weather.city }}</h2>
+
+        <div class="weather-info">
+
+            <div class="info">
+                <h3>🌡️ Temperature</h3>
+                <p>{{ weather.temperature }} °C</p>
+            </div>
+
+            <div class="info">
+                <h3>☁️ Weather</h3>
+                <p>{{ weather.description }}</p>
+            </div>
+
+            <div class="info">
+                <h3>💧 Humidity</h3>
+                <p>{{ weather.humidity }} %</p>
+            </div>
+
+            <div class="info">
+                <h3>💨 Wind Speed</h3>
+                <p>{{ weather.wind_speed }} m/s</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
